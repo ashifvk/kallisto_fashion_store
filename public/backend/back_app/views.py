@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from .models import *
 from .serializers import *
+from django.core.mail import send_mail
 
 
 class Registerapi(GenericAPIView):
@@ -235,4 +236,11 @@ class bookProduct(GenericAPIView):
     def post(self,request,id):
         array=request.data.get('array')
         print(array)
+    #     send_mail(
+    #     'Order placed',
+    #     'Here is the message.',
+    #     'ashif.primalcodes@gmail.com',
+    #     ['ashifvk503@gmail.com'],
+    #     fail_silently=False,
+    # )
         return Response({'suceess':'success'})

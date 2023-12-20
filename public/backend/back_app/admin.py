@@ -14,8 +14,6 @@ class productlistview(admin.ModelAdmin):
     list_display=('id','name','actualprice','discountprice')
     inlines=[sizetabview,]
 admin.site.register(Products,productlistview)
-
-
 admin.site.register(cart)
 admin.site.register(favourite)
 
