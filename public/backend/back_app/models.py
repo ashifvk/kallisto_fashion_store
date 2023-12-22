@@ -110,3 +110,38 @@ class favourite(models.Model):
     def __str__(self):
         return self.product_name
     
+class order(models.Model):
+    order_id=models.CharField(max_length=350)
+    user_name=models.CharField(max_length=250)
+    log_id=models.CharField(max_length=50)
+    email=models.CharField(max_length=250)
+    contact=models.CharField(max_length=250)
+    address=models.CharField(max_length=250)
+    # image=models.ImageField(upload_to='order_image/',null=True,blank=True)
+    product_name=models.CharField(max_length=250)
+    product_id=models.CharField(max_length=250)
+    price=models.CharField(max_length=250)
+    category=models.CharField(max_length=250)
+    gender=models.CharField(max_length=250)
+    selectedSize=models.CharField(max_length=250)
+    placed='placed'
+    shipped='shipped'
+    delivered='delivered'
+    canceled='canceled'
+
+    
+    STATUS_CHOICES = [
+        (placed, 'placed'),
+        (shipped, 'shipped'),
+        (delivered, 'delivered'),
+        (canceled, 'canceled'),
+    ]
+    
+    Status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+     
+    )
+    def __str__(self):
+        return self.user_name
+    

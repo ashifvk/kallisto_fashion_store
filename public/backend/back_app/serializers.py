@@ -31,3 +31,10 @@ class favouritetSerializer(serializers.ModelSerializer):
     class Meta:
         model=favourite
         fields='__all__'
+
+
+class orderSerializer(serializers.ModelSerializer):
+    image = serializers.ImageField(max_length=None, allow_empty_file=True, required=False)
+    class Meta:
+        model=order
+        fields='__all__'

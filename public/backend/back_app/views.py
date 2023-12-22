@@ -5,6 +5,9 @@ from rest_framework import status
 from .models import *
 from .serializers import *
 from django.core.mail import send_mail
+from django.utils import timezone
+import datetime
+import time
 
 
 class Registerapi(GenericAPIView):
@@ -88,7 +91,7 @@ class filtermethod(GenericAPIView):
     def post(self,request):
         category=request.data.get('category')
         gender=request.data.get('gender')
-        print(gender,'----7777777')
+        # print(gender,'----7777777')
         if category:
          result=Products.objects.filter(category=category,gender=gender)
         else:
@@ -106,12 +109,12 @@ class getSingleproduct(GenericAPIView):
     serializer_class_size=SizeSerializer
     def get(self,request,id):
         prodata=Products.objects.get(id=id)
-        print(prodata,'------e5')
+        # print(prodata,'------e5')
         newdata=self.serializer_class(prodata)
-        print(newdata,'========new')
+        # print(newdata,'========new')
         size=productsize.objects.filter(pro_name=prodata)
         sizedata=self.serializer_class_size(size,many=True)
-        print(size,'///////////////////')
+        # print(size,'///////////////////')
         return Response({'data':newdata.data,'data2':sizedata.data})
 
 
@@ -123,7 +126,18 @@ class getcartdetails(GenericAPIView):
         product_name=request.data.get('product_name')
         try:
            product_exists = cart.objects.filter(product_name=product_name, log_id=log_id).exists()
+           print(product_exists,'dhdhhdhdhd///////////////////////')
            if product_exists:
+              if size :
+                  product=cart.objects.filter(product_name=product_name, log_id=log_id)
+                #   print(product.values(),'size//////////////////////')
+                  for i in product:
+                      if i.size == size:
+                        return Response({'response':'already added'})
+                      i.size=size
+                      i.save()
+                      print(i.size,'//////////////////////')
+                      return Response({'response':'updated'})
               return Response({'response':'already added'})
         except:
             pass
@@ -233,14 +247,83 @@ class faveRemove(GenericAPIView):
         return Response({'suceess':'success'})
     
 class bookProduct(GenericAPIView):
+    serializer_class=orderSerializer
     def post(self,request,id):
         array=request.data.get('array')
-        print(array)
-    #     send_mail(
-    #     'Order placed',
-    #     'Here is the message.',
-    #     'ashif.primalcodes@gmail.com',
-    #     ['ashifvk503@gmail.com'],
-    #     fail_silently=False,
-    # )
+        array2=request.data.get('array2')
+        user=UserRegister.objects.get(log_id=id)
+        logindata=login.objects.get(id=id)
+        # print(array,'///////////////')
+        name=user.name
+        contact=user.contact
+        address=user.address
+        email=logindata.email
+        log_id=id
+        # time.sleep(2)
+        for i in array:
+            current_time = timezone.now()  # Current time in UTC
+            order_id = current_time.strftime("%Y%m%d%H%M%S%f")+str(id)
+            # print(order_id)
+            product_id=i['id']
+            product_name=i['name']
+            category=i['category']
+            gender=i['gender']
+            price=i['discountprice']
+            # image=i['Imagesone']
+            # print(image,'//////////////////')
+            for j in array2:
+                if j['product_name'] == i['name']:
+                    size=j['size']
+                    # print(size)
+                    serializer=self.serializer_class(data={'order_id':order_id,'user_name':name,'email':email,'contact':contact,'address':address,
+                    'product_name':product_name,'price':price,'category':category,'gender':gender,"selectedSize":size,'Status':'placed',
+                    'product_id':product_id,'log_id':log_id})
+                    if serializer.is_valid():
+                        email_subject = 'Order placed'
+                        email_message = (
+                            f'Hi {name},\n\n'
+                            f'Thank you for your order!\n\n'
+                            f'your order id for {product_name}: {order_id}\n\n'
+                            f'We have received your order and it is being processed.\n\n'
+                            f'If you have any questions regarding your order, feel free to contact us.\n\n'
+                            f'Thanks,\n\n'
+                            f'Best Regards,\n'
+                            f'Kallisto Team'
+                        )
+                        send_mail(
+                        email_subject,
+                        email_message,
+                        'ashif.primalcodes@gmail.com',
+                        [email],     #//user mail
+                        fail_silently=False,
+                         )
+                        email_message2 = (
+                            f'Hi Kallisto,\n\n'
+                            f'Theres a new  order!\n\n'
+                            f'order id for {product_name}: {order_id}\n\n'
+                            f'Thanks,\n\n'
+                            f'Best Regards\n,'
+                            f'Kallisto Team'
+                        )
+                        send_mail(
+                        email_subject,
+                        email_message2,
+                        'ashif.primalcodes@gmail.com',
+                        ['ashifvk503@gmail.com'],     #///admin
+                        fail_silently=False,
+                         )
+                        data=cart.objects.filter(log_id=id)
+                        data.delete()
+                        serializer.save()
+                        # print('1////////////////////////')
+                        # time.sleep(5)
+        print('haloo')
         return Response({'suceess':'success'})
+
+class getorder(GenericAPIView):
+    serializer_class=orderSerializer
+    def get(self,request,id):
+        print(id)
+        orderData=order.objects.filter(log_id=id)
+        serializer = self.serializer_class(orderData, many=True)
+        return Response({'data':serializer.data if serializer else [],'suceess':'success'})

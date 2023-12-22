@@ -17,3 +17,6 @@ admin.site.register(Products,productlistview)
 admin.site.register(cart)
 admin.site.register(favourite)
 
+class orderlistview(admin.ModelAdmin):
+    list_display=('order_id','user_name','contact','product_name','selectedSize','Status')
+admin.site.register(order,orderlistview)

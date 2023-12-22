@@ -129,7 +129,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
-MEDIA_URL = './media/'
+MEDIA_URL = 'media/'
 # Path where media is stored
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
@@ -141,6 +141,6 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587  # For TLS
 EMAIL_HOST_USER = 'ashif.primalcodes@gmail.com'  # Your Gmail address
-EMAIL_HOST_PASSWORD = 'your_password'  # Your Gmail password or App Password
+EMAIL_HOST_PASSWORD = 'etbl nbyg epgh rsuw'  # Your Gmail password or App Password
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
