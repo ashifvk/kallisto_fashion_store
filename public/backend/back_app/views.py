@@ -269,15 +269,15 @@ class bookProduct(GenericAPIView):
             category=i['category']
             gender=i['gender']
             price=i['discountprice']
-            # image=i['Imagesone']
-            # print(image,'//////////////////')
+            p=Products.objects.get(id=product_id).Imagesone
+            print(p,'//////////////////')
             for j in array2:
                 if j['product_name'] == i['name']:
                     size=j['size']
                     # print(size)
                     serializer=self.serializer_class(data={'order_id':order_id,'user_name':name,'email':email,'contact':contact,'address':address,
                     'product_name':product_name,'price':price,'category':category,'gender':gender,"selectedSize":size,'Status':'placed',
-                    'product_id':product_id,'log_id':log_id})
+                    'product_id':product_id,'log_id':log_id,'image':p})
                     if serializer.is_valid():
                         email_subject = 'Order placed'
                         email_message = (
@@ -327,3 +327,13 @@ class getorder(GenericAPIView):
         orderData=order.objects.filter(log_id=id)
         serializer = self.serializer_class(orderData, many=True)
         return Response({'data':serializer.data if serializer else [],'suceess':'success'})
+    
+
+class cancelorder(GenericAPIView):
+    serializer_class=orderSerializer
+    def get(self,request,id):
+        orderData=order.objects.get(order_id=id)
+        orderData.Status='canceled'
+        orderData.save()
+        serializer = self.serializer_class(orderData)
+        return Response({'data':serializer.data,'suceess':'success'})

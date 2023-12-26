@@ -117,7 +117,7 @@ class order(models.Model):
     email=models.CharField(max_length=250)
     contact=models.CharField(max_length=250)
     address=models.CharField(max_length=250)
-    # image=models.ImageField(upload_to='order_image/',null=True,blank=True)
+    image=models.ImageField(upload_to='order_image/',null=True,blank=True)
     product_name=models.CharField(max_length=250)
     product_id=models.CharField(max_length=250)
     price=models.CharField(max_length=250)
@@ -142,6 +142,7 @@ class order(models.Model):
         choices=STATUS_CHOICES,
      
     )
+    date=models.DateField(null=True,blank=True,auto_now_add=True)
     def __str__(self):
         return self.user_name
     

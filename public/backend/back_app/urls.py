@@ -16,5 +16,6 @@ urlpatterns = [
     path('faveRemove/<int:id>',views.faveRemove.as_view(),name='faveRemove'),
     path('bookProduct/<int:id>',views.bookProduct.as_view(),name='bookProduct'),
     path('getorder/<int:id>',views.getorder.as_view(),name='getorder'),
+    path('cancelorder/<int:id>',views.cancelorder.as_view(),name='cancelorder'),
 
 ]
