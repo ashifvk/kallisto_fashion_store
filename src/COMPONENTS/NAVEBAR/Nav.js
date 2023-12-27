@@ -52,7 +52,7 @@ export default function Nav() {
             <ul className="navbar-nav ms-auto">
               {role == 'user' ? (
                 <li className="nav-item">
-                  <a className="nav-link" aria-current="page" href="">
+                  <a className="nav-link" aria-current="page" href="/Profile">
                     profile
                   </a>
                 </li>

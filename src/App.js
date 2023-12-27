@@ -19,6 +19,7 @@ import Booking from './COMPONENTS/CART/Booking';
 import Admin from './COMPONENTS/ADMIN/Admin';
 import View from './COMPONENTS/ADMIN/View';
 import Viewproduct from './COMPONENTS/PRODUCTS/Viewproduct';
+import Profile from './COMPONENTS/PROFILE/Profile';
 function App() {
   return (
     <>
@@ -42,6 +43,7 @@ function App() {
         <Route path='/admin' element={<Admin />}/>
         <Route path='/view' element={<View />}/>
         <Route path='/viewproduct/:productId' element={<Viewproduct />}/>
+        <Route path='/profile' element={<Profile/>}/>
         </Routes>
       </BrowserRouter>
 

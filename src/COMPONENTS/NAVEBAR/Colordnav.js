@@ -29,7 +29,7 @@ export default function Colordnav() {
             <ul className="navbar-nav ms-auto">
               {role == 'user' ? (
                 <li className="nav-item">
-                  <a className="nav-link" aria-current="page" href="">
+                  <a className="nav-link" aria-current="page" href="/profile">
                     profile
                   </a>
                 </li>

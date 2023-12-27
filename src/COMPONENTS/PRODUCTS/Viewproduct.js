@@ -32,40 +32,15 @@ export default function Viewproduct() {
     };
     
     const [cartDetails,setCart] = useState()
-    const addTobag = (e)=>{
-        e.preventDefault()
-        const role=localStorage.getItem('role')
-        const log_id=localStorage.getItem('log_id')
-        if (role) {
-            // console.log(log_id);
-            // console.log(product.name);
-            // console.log(selectedSize);
-           setCart({['log_id']:log_id,['product_name']:product.name,['selectedSize']:selectedSize})
-            console.log(cartDetails,'cartdetails')
-           
-           
-        }
-        else{
-            toast.warn('Please login', {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "colored",
-                });
-        }
-    }
-    useEffect(()=>{
-        axios.post('http://127.0.0.1:8000/api/getcartdetails',cartDetails).then((response)=>{
-            console.log(response.data.data);
+   
+    // useEffect(()=>{
+    //     axios.post('http://127.0.0.1:8000/api/getcartdetails',cartDetails).then((response)=>{
+    //         console.log(response.data.data);
     
-        }).catch((error)=>{
-            console.log(error);
-        })
-    },[cartDetails])    
+    //     }).catch((error)=>{
+    //         console.log(error);
+    //     })
+    // },[cartDetails])    
 
 
     const {productId}=useParams()
@@ -122,6 +97,49 @@ export default function Viewproduct() {
         const offer = (product.actualprice - product.discountprice) / product.actualprice * 100
         discountElement = <span className="dress-card-off">&ensp;({offer}% OFF)</span>;
         // console.log(offer)
+    }
+
+
+    const addTobag = (e)=>{
+        e.preventDefault()
+        const role=localStorage.getItem('role')
+        const log_id=localStorage.getItem('log_id')
+        if (role) {
+            // console.log(log_id);
+            // console.log(product.name);
+            // console.log(selectedSize);
+           //  setCart({['log_id']:log_id,['product_name']:product.name,['selectedSize']:selectedSize})
+           //  console.log(cartDetails,'cartdetails')
+           
+        axios.post('http://127.0.0.1:8000/api/getcartdetails',{'log_id':log_id,'product_name':product.name,'selectedSize':selectedSize}).then((response)=>{
+            console.log(response.data.response);
+            toast.warn(response.data.response, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                });
+    
+        }).catch((error)=>{
+            console.log(error);
+        })
+        }
+        else{
+            toast.warn('Please login', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                });
+        }
     }
     return (
         <>
